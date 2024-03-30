@@ -3,10 +3,10 @@ setTimeout(function(){
 })
 new Promise(function(reolve){
     console.log('promise1');
-    for(var i=0;i<3;i++){
-        console.log(i);
+    // for(var i=0;i<3;i++){
+    //     console.log(i);
         reolve()
-    }
+    // }
     console.log('promise2');
     
 }).then(function(){

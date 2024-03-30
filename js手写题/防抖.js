@@ -11,17 +11,33 @@ function debounce(fun, wait) {
   };
 }
 
-function debounce(fun, wait) {
-  let timeout;
-  return function () {
-    let context = this;
-    let args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fun.apply(context, args);
-    }, wait);
-  };
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

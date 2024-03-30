@@ -19,4 +19,20 @@ const insertSort = (arr: number[]) => {
   }
   return arr;
 };
+
+const insertSort2 = (arr)=>{
+  const n =arr.length
+  for(let i =1;i<n;i++){
+    let j =i-1
+    const newNum =arr[i]
+    while(arr[j]>newNum&&j>=0){
+      arr[j+1]=arr[j]
+      j--
+    }
+    arr[j+1]=newNum
+  }
+  return arr
+}
+
+
 testSort(insertSort);

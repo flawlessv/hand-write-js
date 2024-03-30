@@ -33,31 +33,3 @@ function quickSort(arr: number[]): number[] {
   return arr;
 }
 testSort(quickSort);
-
-function quick(arr){
-  partition(0,arr.length-1)
-  function partition(left,right){
-     if(left>=right) return
-     let i=left
-     let j=right-1
-     let pivot=right
-     while(i<j){
-      while(arr[i]<arr[pivot]){
-         i++
-      }
-      while(arr[j]>arr[pivot]){
-         j--
-      }
-      if(i<j){
-        [arr[i],arr[j]]=[arr[j],arr[i]]
-        i++
-        j--
-      }
-     }
-     [arr[i],arr[pivot]]=[arr[pivot],arr[i]]
-     partition(left,j)
-     partition(i+1,right)
-  }
-  return arr
-
-}
