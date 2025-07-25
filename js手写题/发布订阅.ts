@@ -1,5 +1,5 @@
 // 定义事件类
-class Event {
+class IEvent {
   private handlers: { [key: string]: Function[] } = {};
 
   // 添加事件监听器
