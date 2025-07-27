@@ -24,7 +24,7 @@ const bubbleArr = (arr: number[]) => {
   // 外层循环：控制排序轮数，每轮确定一个最大值的位置
   for (let i = 0; i < length - 1; i++) {
     // 优化标志：如果一轮中没有发生交换，说明数组已经有序
-    let isSwapped = false;
+    // let isSwapped = false;
     
     // 内层循环：比较相邻元素，将最大值"冒泡"到末尾
     // 每轮循环后，最后i个元素已经排好序，所以只需要比较到length-i-1
@@ -35,14 +35,14 @@ const bubbleArr = (arr: number[]) => {
         let temp = arr[j + 1];
         arr[j + 1] = arr[j];
         arr[j] = temp;
-        isSwapped = true; // 标记发生了交换
+        // isSwapped = true; // 标记发生了交换
       }
     }
     
     // 优化：如果这一轮没有发生交换，说明数组已经有序，可以提前退出
-    if (!isSwapped) {
-      break;
-    }
+    // if (!isSwapped) {
+    //   break;
+    // }
   }
   
   return arr;

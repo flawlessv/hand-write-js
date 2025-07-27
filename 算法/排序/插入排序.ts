@@ -42,21 +42,4 @@ const insertSort = (arr: number[]) => {
   return arr;
 };
 
-const insertSort2 = (arr) => {
-  const n = arr.length
-  for (let i = 1; i < n; i++) {
-    let j = i - 1
-    const newNum = arr[i] // 保存当前要插入的元素
-    
-    // 寻找插入位置并移动元素
-    while (arr[j] > newNum && j >= 0) {
-      arr[j + 1] = arr[j] // 元素后移
-      j-- // 继续向前比较
-    }
-    // 插入元素
-    arr[j + 1] = newNum
-  }
-  return arr
-}
-
 testSort(insertSort);
