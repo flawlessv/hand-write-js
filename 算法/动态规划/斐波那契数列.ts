@@ -29,3 +29,12 @@ function fib2(n: number): number {
   }
   return dp[n];
 };
+
+// 递归版本
+function fibRecursive(n: number): number {
+  // 基础情况
+  if (n <= 1) return n;
+  
+  // 递归调用
+  return fibRecursive(n - 1) + fibRecursive(n - 2);
+}

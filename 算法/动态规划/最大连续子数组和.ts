@@ -7,6 +7,7 @@
 //   }
 //   return Math.max(...dp);
 // }
+//动态规划
 function maxArr(arr: number[]): number {
   let preValue = arr[0];
   let max = preValue;
@@ -18,3 +19,14 @@ function maxArr(arr: number[]): number {
   return max;
 }
 console.log(maxArr([2, 3, -2, 1, 5, -2, 5, 7, -10, 2, 8]));
+//贪心
+function maxSubArray(nums: number[]): number {
+  let maxSum = -Infinity
+  let curSum = 0
+  for(let i =0;i<nums.length;i++){
+      curSum+=nums[i]
+      maxSum=Math.max(curSum,maxSum)
+      if(curSum<0) curSum=0
+  }
+  return maxSum
+};
