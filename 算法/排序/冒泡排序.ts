@@ -28,7 +28,7 @@ const bubbleArr = (arr: number[]) => {
     
     // 内层循环：比较相邻元素，将最大值"冒泡"到末尾
     // 每轮循环后，最后i个元素已经排好序，所以只需要比较到length-i-1
-    for (let j = 0; j < length - i - 1; j++) {
+    for (let j = 0; j < length - 1 - i; j++) {
       // 如果前一个元素大于后一个元素，则交换它们
       if (arr[j] > arr[j + 1]) {
         // 交换相邻元素

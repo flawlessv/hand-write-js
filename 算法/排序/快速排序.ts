@@ -17,7 +17,6 @@ import { testSort } from "hy-algokit";
  */
 
 function quickSort(arr: number[]): number[] {
-  partition(0, arr.length - 1);
   
   function partition(left: number, right: number) {
     if (left >= right) return; // 递归终止条件：当左边界大于等于右边界时
@@ -51,6 +50,8 @@ function quickSort(arr: number[]): number[] {
     partition(left, j);
     partition(i + 1, right);
   }
+  partition(0, arr.length - 1);
+
   return arr;
 }
 
