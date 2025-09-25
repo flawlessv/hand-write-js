@@ -1,7 +1,8 @@
 //节流：在指定时间内，函数只会被调用一次，
 function throttled1(fn, delay = 500) {
   let oldtime = Date.now();
-  return function (...args) {
+  return function () {
+    const args = arguments
     let newtime = Date.now();
     if (newtime - oldtime >= delay) {
       fn(args)

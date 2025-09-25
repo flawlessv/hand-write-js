@@ -26,21 +26,3 @@ Promise.all = function (promises) {
       }
     });
   };
-  
-  function pro(promises) {
-    if (promises.length === 0) return [];
-    return new Promise((resolve, reject) => {
-      let res = [];
-      let count = 0;
-      for (let i = 0; i < promises.length; i++) {
-        Promise.resolve(promises[i]).then((data) => {
-          res.push(data);
-          if (++count === promises.length) {
-            resolve(res);
-          }
-        }).catch(err=>{
-          reject(err)
-        })
-      }
-    });
-  }

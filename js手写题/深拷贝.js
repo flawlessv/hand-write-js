@@ -23,4 +23,3 @@ const target = {
 };
 target.target = target;
 console.log(clone(target));
-
