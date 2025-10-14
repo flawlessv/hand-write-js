@@ -1,5 +1,6 @@
 /**
  * LeetCode 746. 使用最小花费爬楼梯
+ * LeetCode: https://leetcode.cn/problems/min-cost-climbing-stairs/
  * 
  * 题目描述：
  * 数组的每个下标作为一个阶梯，第 i 个阶梯对应着一个非负数的体力花费值 cost[i]（下标从 0 开始）。

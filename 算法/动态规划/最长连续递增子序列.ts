@@ -1,5 +1,6 @@
 /**
  * LeetCode 674. 最长连续递增子序列
+ * LeetCode: https://leetcode.cn/problems/longest-continuous-increasing-subsequence/
  * 
  * 题目描述：
  * 给定一个未经排序的整数数组，找到最长且连续递增的子序列，并返回该序列的长度。
