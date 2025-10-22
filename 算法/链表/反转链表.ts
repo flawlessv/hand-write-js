@@ -77,35 +77,6 @@ function reverseListRecursive(head: ListNode | null): ListNode | null {
   return newHead;
 }
 
-// 方法三：使用栈实现
-function reverseListStack(head: ListNode | null): ListNode | null {
-  if (head === null) return null;
-  
-  // 使用栈存储所有节点
-  const stack: ListNode[] = [];
-  let curr = head;
-  
-  // 将所有节点压入栈
-  while (curr !== null) {
-    stack.push(curr);
-    curr = curr.next;
-  }
-  
-  // 从栈中弹出节点，重新连接
-  const newHead = stack.pop()!;
-  curr = newHead;
-  
-  while (stack.length > 0) {
-    curr.next = stack.pop()!;
-    curr = curr.next;
-  }
-  
-  // 最后一个节点的 next 设为 null
-  curr.next = null;
-  
-  return newHead;
-}
-
 // 辅助函数：创建链表节点
 function createListNode(val: number, next: ListNode | null = null): ListNode {
   return { val, next };
@@ -158,9 +129,6 @@ printLinkedList(reversed1, "迭代反转后");
 const reversed2 = reverseListRecursive(createLinkedList([1, 2, 3, 4, 5]));
 printLinkedList(reversed2, "递归反转后");
 
-const reversed3 = reverseListStack(createLinkedList([1, 2, 3, 4, 5]));
-printLinkedList(reversed3, "栈反转后");
-
 // 测试用例2：两个节点的链表 [1,2]
 console.log("\n--- 测试2：两个节点 ---");
 const list2 = createLinkedList([1, 2]);
@@ -195,9 +163,4 @@ console.time("递归方法");
 const largeList2 = createLinkedList(largeArray);
 reverseListRecursive(largeList2);
 console.timeEnd("递归方法");
-
-console.time("栈方法");
-const largeList3 = createLinkedList(largeArray);
-reverseListStack(largeList3);
-console.timeEnd("栈方法");
-
+export {};
