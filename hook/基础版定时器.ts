@@ -21,8 +21,8 @@ const useCountdown = (initialValue: number) => {
 };
 
 // TODO:使用setTimeout
-// function Timer() {
-//     const [count, setCount] = useState(0);
+// function Timer(initialValue) {
+//     const [count, setCount] = useState(initialValue);
     
 //     useEffect(() => {
 //       const timeoutId = setTimeout(() => {

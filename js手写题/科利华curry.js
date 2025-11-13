@@ -27,14 +27,43 @@
  */
 
 // 基础版柯里化实现
+/**
+ * 实现函数柯里化（curry）
+ * 
+ * 实现思路详细解释：
+ * 
+ * 1. curry函数接受一个原始函数fn作为参数，返回一个新的函数curried。
+ * 2. curried函数可以接收任意数量的参数（...args）。
+ * 3. 检查当前收集到的参数数量args.length是否已经足够（大于等于原函数fn.length的参数个数）。
+ *    - fn.length是原函数声明时预期的参数个数（不是已经传入的个数）；
+ *    - 例如 function add(a, b, c) { ... } 则 add.length = 3。
+ * 4. 如果参数已经收集够，直接用fn.apply(this, args)调用原函数，把所有参数传入。
+ * 5. 如果参数还不够，则返回一个新的函数，继续收集下一个参数集：
+ *    - 新函数接收剩下的参数（...moreArgs），
+ *    - 用args.concat(moreArgs)把当前参数集合和新参数拼起来，
+ *    - 递归调用curried（保持this和值不变），继续判断参数是否足够。
+ * 6. 直到参数足够，最终调用fn并返回最终结果。
+ *
+ * 为什么这样实现：
+ * - 这样做的好处是支持多种调用方式：
+ *    - curried(1)(2)(3)  // 每次只传一个参数
+ *    - curried(1, 2)(3)  // 第一次传两个参数
+ *    - curried(1)(2, 3)  // 第二次传两个参数
+ *    - curried(1, 2, 3)  // 一步到位传三个参数
+ * - 闭包和递归的结合，实现了参数的记忆和累加，直到满足执行条件。
+ */
 function curry(fn) {
+  // curried 是内部实现的递归收集参数的函数
   return function curried(...args) {
-    // 如果传入的参数个数大于等于原函数的参数个数，直接执行
+    // 如果已经收集到足够的参数，直接调用原始函数
     if (args.length >= fn.length) {
+      // 这里用 apply 是为了保证 this 指向的正确性
       return fn.apply(this, args);
     } else {
-      // 否则返回一个新函数，继续收集参数
+      // 如果参数还不够，返回新的函数，用于继续收集
       return function (...moreArgs) {
+        // 拼接之前收集到的参数和本次收到的参数
+        // 递归调用 curried 以检查参数是否够了
         return curried.apply(this, args.concat(moreArgs));
       };
     }
