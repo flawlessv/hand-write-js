@@ -76,6 +76,7 @@ class MyPromise {
       this.onRejectedCallbacks.push(onRejected);
     }
   }
+  // TODO:感觉可以补充一个catch方法
   // resolve 静态方法
   static resolve (parameter) {
     // 如果传入 MyPromise 就直接返回
