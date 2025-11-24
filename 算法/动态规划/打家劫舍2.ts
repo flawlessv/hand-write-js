@@ -59,9 +59,6 @@ function rob(nums: number[]): number {
 
 // 在指定范围内进行打家劫舍（打家劫舍 I 的逻辑）
 function robRange(nums: number[], start: number, end: number): number {
-    if (start > end) return 0;
-    if (start === end) return nums[start];
-    
     const dp: number[] = [];
     dp[start] = nums[start];
     dp[start + 1] = Math.max(nums[start], nums[start + 1]);
