@@ -17,21 +17,15 @@
  * 时间复杂度：O(n) - 需要遍历所有节点
  * 空间复杂度：O(h) - h为树的高度，递归栈的深度
  */
-//TODO: 这里能不能像最大深度那种解法搞的简单一点呢
 function minDepth(root: TreeNode | null): number {
-    // 空树的深度为0
     if (root === null) return 0;
     
-    // 只有左子树的情况：必须继续向下找到叶子节点
-    if (root.left !== null && root.right === null) {
-        return 1 + minDepth(root.left);
-    }
+    // 如果左为空，只考虑右子树（包括左右都为空的情况，此时返回1）
+    if (root.left === null) return 1 + minDepth(root.right);
     
-    // 只有右子树的情况：必须继续向下找到叶子节点
-    if (root.left === null && root.right !== null) {
-        return 1 + minDepth(root.right);
-    }
+    // 如果右为空，只考虑左子树
+    if (root.right === null) return 1 + minDepth(root.left);
     
-    // 左右子树都存在：取较小的深度
+    // 左右都不为空，取较小值
     return 1 + Math.min(minDepth(root.left), minDepth(root.right));
 }
