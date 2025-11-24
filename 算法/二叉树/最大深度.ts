@@ -41,6 +41,14 @@ function maxDepth(root: TreeNode | null): number {
   const rightDepth = maxDepth(root.right);
   
   // 当前节点的深度 = 1 + 左右子树的最大深度
+  // 
+  // 【关键点】为什么可以直接用 Math.max？
+  // 因为即使一边是 null（返回0），也不影响取最大值：
+  // - 如果左子树深度是3，右子树是null（返回0），Math.max(3, 0) = 3 ✓
+  // - 如果左子树是null（返回0），右子树深度是5，Math.max(0, 5) = 5 ✓
+  // - 如果左右都是null（都返回0），Math.max(0, 0) = 0，然后+1=1 ✓（单节点情况）
+  // 
+  // 所以最大深度可以直接用 Math.max，不需要特殊判断哪边为空
   return 1 + Math.max(leftDepth, rightDepth);
 }
 

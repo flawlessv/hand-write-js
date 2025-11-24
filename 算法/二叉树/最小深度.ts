@@ -20,12 +20,40 @@
 function minDepth(root: TreeNode | null): number {
     if (root === null) return 0;
     
-    // 如果左为空，只考虑右子树（包括左右都为空的情况，此时返回1）
+    // 【关键点】为什么不能直接用 Math.min，而要先判断哪边为空？
+    // 
+    // 因为最小深度必须到达"叶子节点"，而 null 不是叶子节点！
+    // 
+    // 错误示例（如果直接用 Math.min）：
+    //     1
+    //    / \
+    //  null  2
+    //       / \
+    //      3   4
+    // 
+    // 如果用 Math.min(minDepth(null), minDepth(2)):
+    //   - minDepth(null) = 0
+    //   - minDepth(2) = 2（节点2到叶子节点3或4的深度）
+    //   - Math.min(0, 2) = 0
+    //   - 返回 1 + 0 = 1 ❌ 错误！节点1不是叶子节点，最小深度应该是3
+    // 
+    // 正确做法：如果一边是 null，必须走另一边（因为 null 不是叶子节点）
+    //   - 如果左为空，只考虑右子树：1 + minDepth(2) = 1 + 2 = 3 ✓
+    //   - 如果右为空，只考虑左子树：1 + minDepth(left)
+    //   - 如果左右都不为空，才可以用 Math.min 取较小值
+    
+    // 如果左为空，只考虑右子树
+    // 包括两种情况：
+    //   1. 左右都为空：返回 1 + minDepth(null) = 1 + 0 = 1 ✓（当前节点是叶子节点）
+    //   2. 只有右子树：返回 1 + minDepth(right) ✓（必须继续向下找叶子节点）
     if (root.left === null) return 1 + minDepth(root.right);
     
     // 如果右为空，只考虑左子树
+    // 此时左子树一定不为空（否则上面已经返回了）
+    // 必须继续向下找叶子节点
     if (root.right === null) return 1 + minDepth(root.left);
     
-    // 左右都不为空，取较小值
+    // 左右都不为空，可以安全地取较小值
+    // 因为两边都有子树，都可以到达叶子节点
     return 1 + Math.min(minDepth(root.left), minDepth(root.right));
 }
