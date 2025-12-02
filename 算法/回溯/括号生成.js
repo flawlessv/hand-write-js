@@ -61,7 +61,17 @@
  */
 var generateParenthesis = function(n) {
     const result = [];
-    
+//     开始: backtrack('', 0, 0)
+//   ├─ 添加 '(' → backtrack('(', 1, 0)
+//   │   ├─ 添加 '(' → backtrack('((', 2, 0)
+//   │   │   ├─ 添加 ')' → backtrack('(()', 2, 1)
+//   │   │   │   └─ 添加 ')' → backtrack('(())', 2, 2) ✓ 完成！保存到result
+//   │   │   └─ 不能添加 '(' (left已经等于2)
+//   │   └─ 添加 ')' → backtrack('()', 1, 1)
+//   │       ├─ 添加 '(' → backtrack('()(', 2, 1)
+//   │       │   └─ 添加 ')' → backtrack('()()', 2, 2) ✓ 完成！保存到result
+//   │       └─ 不能添加 ')' (right已经等于left)
+//   └─ 不能添加 ')' (right不能大于left)
     /**
      * 回溯函数
      * @param {string} current - 当前构建的字符串
