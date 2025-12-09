@@ -182,97 +182,16 @@
  * @return {number}
  */
 var subarraySum = function(nums, k) {
-    /**
-     * prefixSumMap 详解：
-     * 这是一个哈希表（Map），用来记录"每个前缀和值出现过的次数"
-     * 
-     * 结构：Map<前缀和的值, 出现次数>
-     * 
-     * 例如：如果数组是 [1, -1, 1, -1, 1]
-     *      前缀和序列：1, 0, 1, 0, 1
-     *      那么 prefixSumMap 会记录：
-     *        {0: 2}  // 前缀和 0 在位置 1 和位置 3 出现过，共 2 次
-     *        {1: 3}  // 前缀和 1 在位置 0、位置 2、位置 4 出现过，共 3 次
-     * 
-     * 为什么要记录次数？
-     * 因为不同的位置可能有相同的前缀和（特别是数组包含负数或0时）
-     * 每个相同的前缀和都能形成一个不同的子数组
-     */
     const prefixSumMap = new Map();
-    
-    /**
-     * 初始化：prefixSumMap.set(0, 1)
-     * 
-     * 这表示"在数组开始之前，前缀和为 0 的情况出现了 1 次"
-     * 相当于在数组前面添加了一个虚拟的前缀和 0
-     * 
-     * 为什么需要这个初始化？
-     * 考虑：如果从数组开始到当前位置的前缀和正好等于 k
-     * 例如：nums = [1, 1], k = 2
-     *      当遍历到位置 1 时，prefixSum = 2
-     *      此时 prefixSum - k = 2 - 2 = 0
-     *      我们需要在哈希表中找到前缀和为 0 的情况
-     *      如果没有初始化，就找不到，会漏掉这个子数组
-     */
     prefixSumMap.set(0, 1);
-    
     let prefixSum = 0;  // 当前前缀和：从数组开始到当前位置的所有元素的和
     let count = 0;      // 符合条件的子数组个数
-    
     for (let num of nums) {
         // 更新前缀和：累加当前元素
         prefixSum += num;
-        
-        /**
-         * 关键步骤：查找是否存在 prefixSum[i] = prefixSum - k
-         * 
-         * 如果 prefixSum - k 在哈希表中，说明之前某个位置的前缀和等于 prefixSum - k
-         * 根据公式：prefixSum[j] - prefixSum[i] = k
-         * 即：当前前缀和 - 之前某个位置的前缀和 = k
-         * 所以：从"之前那个位置+1"到"当前位置"的子数组和为 k
-         * 
-         * 例如：nums = [1, 2, 3], k = 3
-         *      位置 0: prefixSum = 1, prefixSum - k = -2，不在哈希表中
-         *      位置 1: prefixSum = 3, prefixSum - k = 0，在哈希表中！
-         *             说明从位置 0 到位置 1 的子数组和为 3，即 [1, 2] = 3
-         *             因为 prefixSum[1] - prefixSum[-1] = 3 - 0 = 3（prefixSum[-1] = 0 是初始值）
-         *      位置 2: prefixSum = 6, prefixSum - k = 3，在哈希表中！
-         *             说明从位置 1+1=2 到位置 2 的子数组和为 3，即 [3] = 3
-         *             因为 prefixSum[2] - prefixSum[1] = 6 - 3 = 3
-         */
         if (prefixSumMap.has(prefixSum - k)) {
-            /**
-             * 为什么是 count += prefixSumMap.get(prefixSum - k)？
-             * 
-             * 因为可能有多个位置的前缀和都等于 prefixSum - k
-             * 每个这样的位置都能和当前位置形成一个和为 k 的子数组
-             * 
-             * 示例：nums = [1, -1, 1, -1, 1], k = 1
-             *      前缀和序列：1, 0, 1, 0, 1
-             *      位置：     0  1  2  3  4
-             *      
-             *      当遍历到位置 4 时：
-             *        prefixSum = 1
-             *        prefixSum - k = 0
-             *        前缀和为 0 在位置 1 和位置 3 都出现过（出现次数为 2）
-             *        所以找到 2 个子数组：
-             *          - 从位置 2 到位置 4：[1, -1, 1] = 1
-             *          - 从位置 4 到位置 4：[1] = 1
-             *        因此 count += 2
-             */
             count += prefixSumMap.get(prefixSum - k);
         }
-        
-        /**
-         * 更新当前前缀和的出现次数
-         * 
-         * 这个操作要在检查之后，因为我们要找的是"之前"出现的前缀和
-         * 如果先更新再检查，可能会把当前的前缀和也算进去，导致错误
-         * 
-         * 例如：如果 prefixSum = k，且我们先更新了 prefixSumMap
-         *      那么 prefixSum - k = 0 会在哈希表中找到当前的前缀和
-         *      这会导致错误地计算子数组
-         */
         prefixSumMap.set(prefixSum, (prefixSumMap.get(prefixSum) || 0) + 1);
     }
     
