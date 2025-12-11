@@ -81,7 +81,6 @@
  * @param {number[][]} matrix
  * @return {number[]}
  */
-// TODO:这题没
 var spiralOrder = function(matrix) {
     if (!matrix || matrix.length === 0 || matrix[0].length === 0) {
         return [];
@@ -109,14 +108,14 @@ var spiralOrder = function(matrix) {
             result.push(matrix[i][right]);
         }
         
-        // 3. 从右到左遍历下边界（注意条件：top < bottom，避免单行重复）
+        // 3. 从右到左遍历下边界（注意条件：top < bottom，避免单行矩阵重复）
         if (top < bottom) {
             for (let j = right - 1; j >= left; j--) {
                 result.push(matrix[bottom][j]);
             }
         }
         
-        // 4. 从下到上遍历左边界（注意条件：left < right，避免单列重复）
+        // 4. 从下到上遍历左边界（注意条件：left < right，避免单行矩阵重复）
         if (left < right) {
             for (let i = bottom - 1; i > top; i--) {
                 result.push(matrix[i][left]);
@@ -272,4 +271,6 @@ printMatrix(matrix8);
 let result8 = spiralOrder(matrix8);
 console.log(`输出: [${result8.join(',')}]`);
 console.log("期望: [42]");
+
+
 

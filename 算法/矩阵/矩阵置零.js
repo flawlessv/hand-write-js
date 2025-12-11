@@ -241,3 +241,5 @@ console.log("输出:");
 printMatrix(matrix6);
 console.log("期望: [[0,0,0,0],[0,0,0,0],[0,0,0,12],[0,0,0,0]]");
 
+
+
