@@ -43,51 +43,71 @@
  * 空间复杂度：O(m*n) - 可优化为 O(n)
  */
 
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
+/**
+ * 知识点总结：
+ * 本题属于典型的二维动态规划（DP）问题，是 LeetCode 62（不同路径）的变种，区别在于增加了障碍物的判断。
+ * 
+ * 状态定义：
+ *   dp[i][j] 表示从起点 (0,0) 到达 (i,j) 位置的不同路径数。
+ * 
+ * 转移方程：
+ *   - 如果 obstacleGrid[i][j] == 1，说明当前位置为障碍物，无法到达，dp[i][j] = 0；
+ *   - 否则，dp[i][j] = dp[i-1][j] + dp[i][j-1]（即只能从上方或左侧到达）。
+ * 
+ * 初始化：
+ *   - 当起点或终点为障碍物直接返回 0；
+ *   - 第一行/第一列，只要遇到障碍物，则之后的格子均不可达，均为 0。
+ * 
+ * 时间复杂度：O(m * n)
+ * 空间复杂度：O(m * n)（可进一步空间优化为 O(n)）
+ */
+
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
 function uniquePathsWithObstacles(obstacleGrid: number[][]): number {
-    const m: number = obstacleGrid.length;
-    const n: number = obstacleGrid[0].length;
-    
-    // 如果起点或终点有障碍物，直接返回0
-    if (obstacleGrid[0][0] === 1 || obstacleGrid[m-1][n-1] === 1) {
+    const m = obstacleGrid.length;
+    const n = obstacleGrid[0].length;
+
+    // 如果起点或终点有障碍，直接返回 0
+    if (obstacleGrid[0][0] === 1 || obstacleGrid[m - 1][n - 1] === 1) {
         return 0;
     }
-    
-    /**
-     * dp[i][j]: 到达(i, j)的路径数
-     * 
-     * 边界条件：
-     * dp[0][*]: 用u表示第一个障碍物下标，则u之前为1，u之后（含u）为0
-     * dp[*][0]: 同上
-     * 
-     * 状态转移：
-     * dp[i][j]: obstacleGrid[i][j] === 1 ? 0 : dp[i-1][j] + dp[i][j-1];
-     */
-    const dp: number[][] = new Array(m).fill(0).map(_ => new Array(n).fill(0));
-    
+
+    // 定义和初始化 dp 表
+    const dp: number[][] = Array.from({ length: m }, () => new Array(n).fill(0));
+    dp[0][0] = 1;
+
     // 初始化第一行
-    for (let j = 0; j < n && obstacleGrid[0][j] === 0; j++) {
-        dp[0][j] = 1;
+    for (let j = 1; j < n; j++) {
+        // 只有当前格子不是障碍，且左边的格子可以到达，当前格子才能到达
+        dp[0][j] = (obstacleGrid[0][j] === 0 && dp[0][j - 1] === 1) ? 1 : 0;
     }
-    
+
     // 初始化第一列
-    for (let i = 0; i < m && obstacleGrid[i][0] === 0; i++) {
-        dp[i][0] = 1;
+    for (let i = 1; i < m; i++) {
+        // 只有当前格子不是障碍，且左边的格子可以到达，当前格子才能到达
+        dp[i][0] = (obstacleGrid[i][0] === 0 && dp[i - 1][0] === 1) ? 1 : 0;
     }
-    
-    // 填充dp表
+
+    // 状态转移
     for (let i = 1; i < m; i++) {
         for (let j = 1; j < n; j++) {
             if (obstacleGrid[i][j] === 1) {
-                dp[i][j] = 0; // 有障碍物，路径数为0
+                dp[i][j] = 0;
             } else {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
             }
         }
     }
-    
+
     return dp[m - 1][n - 1];
 }
-
 
 
 // 测试用例
