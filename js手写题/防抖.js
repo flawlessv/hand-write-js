@@ -47,8 +47,6 @@ function debounceAdvanced(func, wait, options = {}) {
   
   let timeout = null;
   let maxTimeout = null;
-  let lastCallTime = 0;
-  let lastInvokeTime = 0;
   
   // 执行函数
   function invokeFunc(context, args) {

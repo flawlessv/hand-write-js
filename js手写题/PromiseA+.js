@@ -76,7 +76,12 @@ class MyPromise {
       this.onRejectedCallbacks.push(onRejected);
     }
   }
-  // TODO:感觉可以补充一个catch方法
+
+  // catch 方法，实际上是 then(null, onRejected) 的语法糖
+  catch(onRejected) {
+    return this.then(null, onRejected);
+  }
+
   // resolve 静态方法
   static resolve (parameter) {
     // 如果传入 MyPromise 就直接返回
@@ -94,6 +99,44 @@ class MyPromise {
   static reject (reason) {
     return new MyPromise((resolve, reject) => {
       reject(reason);
+    });
+  }
+
+  // all 静态方法
+  static all(promises) {
+    return new MyPromise((resolve, reject) => {
+      // 如果传入的不是可迭代对象，直接 reject
+      if (!Array.isArray(promises)) {
+        return reject(new TypeError('Argument must be an array'));
+      }
+
+      // 如果传入空数组，直接 resolve
+      if (promises.length === 0) {
+        return resolve([]);
+      }
+
+      const results = [];
+      let completedCount = 0;
+
+      promises.forEach((promise, index) => {
+        // 将每个值转换为 Promise
+        MyPromise.resolve(promise).then(
+          (value) => {
+            // 按顺序保存结果
+            results[index] = value;
+            completedCount++;
+
+            // 当所有 Promise 都完成时，resolve 结果数组
+            if (completedCount === promises.length) {
+              resolve(results);
+            }
+          },
+          (reason) => {
+            // 如果任何一个 Promise 失败，立即 reject
+            reject(reason);
+          }
+        );
+      });
     });
   }
 }
