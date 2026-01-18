@@ -1,3 +1,76 @@
+interface TreeNode{
+    val: number;
+    left: TreeNode | null;
+    right: TreeNode | null;
+}
+
+
+
+
+/**
+ * 前置学习：先写出不分level切片的BFS，核心思想是通过队列来辅助遍历，队列清空时，遍历结束
+ *  a
+ * / \
+ * b  c
+ * /   \
+ * d    e
+ * ["a","b","c","d","e"]
+ */
+const treeLevelPre = (root: TreeNode): number[] => {
+    const result: number[] = []
+    const queue: TreeNode[] = [root]
+    while (queue.length > 0) {
+        const node: TreeNode = queue.shift()!
+        result.push(node.val)
+        if (node.left) queue.push(node.left)
+        if (node.right) queue.push(node.right)
+    }
+    return result
+}
+
+
+
+
+/**
+ * LeetCode 102. 二叉树的层序遍历
+ * LeetCode: https://leetcode.cn/problems/binary-tree-level-order-traversal/
+ * 拓展1: 增加level切片，输出二维数组
+ * 
+ *      a
+ *     / \
+ *    b   c
+ *   / \   \
+ *  d   e   f
+ * 
+ * 输出: [["a"], ["b","c"], ["d","e","f"]]
+ * 
+ * 利用queue的size，来控制每一层的切片 - 为什么 size 能保证“分层”？ 
+ * 因为在进入 while 的这一轮时，队列里只存着“当前层的所有节点”（这是 BFS 的不变式）
+ * queue:  [a]       size:1
+ * queue:  [b,c]     size:2
+ * queue:  [d,e,f]   size:3
+ */
+
+
+const treeLevelWithArray = (root: TreeNode | null) => {
+    if (!root) return []
+    const result: number[][] = []
+    const queue: TreeNode[] = [root]
+    while (queue.length > 0) {
+        const size = queue.length
+        const level: number[] = []
+        for (let i = 0; i < size; i++) {
+            const node = queue.shift()!
+            level.push(node.val)
+            if (node.left) queue.push(node.left)
+            if (node.right) queue.push(node.right)
+        }
+        result.push(level)
+    }
+    return result
+}
+
+
 /**
  * LeetCode 102. 二叉树的层序遍历
  * LeetCode: https://leetcode.cn/problems/binary-tree-level-order-traversal/
