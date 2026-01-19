@@ -37,22 +37,41 @@ interface ListNode {
 
 // 方法一：迭代实现（双指针法）
 function reverseList(head: ListNode | null): ListNode | null {
-  let prevNode: ListNode | null = null; // 前一个节点
-  let currNode: ListNode | null = head; // 当前节点
-  
-  // 遍历链表，逐个反转指针
+  // prevNode：前一个节点，初始为 null（反转后链表的尾节点指向 null）
+  let prevNode: ListNode | null = null;
+  // currNode：当前正在处理的节点，从头节点开始
+  let currNode: ListNode | null = head;
+
+  // 遍历链表，逐个反转每个节点的指针方向
   while (currNode !== null) {
-    const nextNode: ListNode | null = currNode.next; // 保存下一个节点
-    
-    // 反转当前节点的指针，使其指向前一个节点
+    // 步骤1：先将当前节点的下一个节点保存到 nextNode
+    //        为什么要在修改指针前保存？
+    //        因为下一步 currNode.next = prevNode 会覆盖原指针，
+    //        如果不提前保存，后续就无法继续遍历链表了
+    const nextNode: ListNode | null = currNode.next;
+
+    // 步骤2：反转当前节点的指针，使其指向前一个节点
+    //        反转前：currNode → nextNode
+    //        反转后：currNode → prevNode
     currNode.next = prevNode;
-    
-    // 移动指针：prev 和 curr 都向前移动一步
+
+    // 步骤3：prevNode 向前移动一步，指向当前节点
+    //        因为当前节点已经处理完毕，它将成为下一个节点的"前一个节点"
     prevNode = currNode;
+
+    // 步骤4：currNode 向前移动一步，指向之前保存的下一个节点
+    //        为什么是 currNode = nextNode？
+    //        - nextNode 是我们在步骤1中保存的原链表的下一个节点
+    //        - 现在当前节点已经处理完了，需要处理下一个节点
+    //        - 因为 currNode.next 已经被修改指向前一个节点了，
+    //        - 所以必须用之前保存的 nextNode 来获取下一个待处理的节点
     currNode = nextNode;
+
+    // 循环继续，处理下一个节点，直到 currNode 为 null（到达原链表末尾）
   }
-  
-  // 返回新的头节点（原来的尾节点）
+
+  // 循环结束时，currNode 为 null，prevNode 指向原链表的最后一个节点
+  // 也就是反转后链表的头节点
   return prevNode;
 }
 
