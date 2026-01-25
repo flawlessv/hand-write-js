@@ -89,7 +89,37 @@ function longestConsecutive(nums: number[]): number {
     }
     
     return longestStreak;
+}  
+
+// 
+
+
+/**
+ * 时间复杂度为什么是 O(n)（面试口述版）：
+ * - 外层遍历 Set：每个不同数字遍历一次，O(m)（m <= n）
+ * - 只从“起点”扩展：仅当 num-1 不在 Set 时才进入 while
+ * - 摊还分析：currentNum 在扩展过程中只会递增；每个数字最多被某个起点的扩展“走过”一次
+ *   所以所有 while 的总步数 <= m，并不会变成 m*m
+ * - 总时间：O(m) + O(m) = O(m) = O(n)，空间：O(n)（Set）
+ */
+const longestConsecutiveCode = (nums: number[]): number => {
+    if(nums.length === 0) return 0;
+    const numSet: Set<number> = new Set(nums);
+    let maxLen: number = 0;
+    for(const num of numSet) {
+        if(numSet.has(num - 1)) continue;
+        // 以当前数字为起点，计算连续序列长度
+        let curLen: number = 1;
+        let currentNum: number = num;
+        while(numSet.has(currentNum + 1)) {
+            currentNum++;
+            curLen++;
+        }
+        maxLen = Math.max(maxLen, curLen);
+    }
+    return maxLen;
 }
+
 
 /**
  * 方法二：排序方法（不满足 O(n) 时间复杂度要求，但思路简单）

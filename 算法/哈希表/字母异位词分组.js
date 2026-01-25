@@ -79,6 +79,20 @@ var groupAnagramsV2 = function(strs) {
     return Array.from(map.values());
 };
 
+
+
+// 方法三： 补一个 使用对象实现的简洁版，排序+map的思路
+const groupAnagramsV3 = (strs) => {
+    const map = {}
+    for(const str of strs) {
+        const sortKey = str.split('').sort().join('');
+        if(map[sortKey]) map[sortKey].push(str);
+        else map[sortKey] = [str];
+    }
+    return Object.values(map);
+}
+
+
 // ========== 测试用例 ==========
 console.log("=== 字母异位词分组测试 ===");
 
