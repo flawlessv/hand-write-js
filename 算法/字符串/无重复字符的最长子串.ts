@@ -41,7 +41,7 @@
 // 窗口 [3,5]，字符 'a' 最后出现在位置 1
 // 因为 1 < 3，所以 'a' 不在当前窗口内，可以安全地加入窗口
 
-
+// 需要注意：：碰到当前窗口内的重复字符时，左边界不会慢慢left++一步一步挪，而是直接跳步到「该字符上一次出现位置的下一位」（也就是重复位置+1），一步到位把重复的字符彻底排除在新窗口外，保证新窗口内绝对无重复
 function lengthOfLongestSubstring(s: string): number {
     if (s.length === 0) return 0;
     
@@ -55,6 +55,7 @@ function lengthOfLongestSubstring(s: string): number {
         // 如果当前字符已经存在且在当前窗口内
         // charMap.get(currentChar) 返回该字符最后出现的位置
         // 如果最后出现位置 >= left，说明在当前窗口内有重复
+        // charMap.get(currentChar)! >= left是为了避免left前面的重复
         if (charMap.has(currentChar) && charMap.get(currentChar)! >= left) {
             // 移动左指针到重复字符的下一个位置
             left = charMap.get(currentChar)! + 1;

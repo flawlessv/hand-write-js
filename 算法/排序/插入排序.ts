@@ -37,9 +37,9 @@ const insertSort = (arr: number[]) => {
       j-- // 继续向前比较
     }
     // 将newNum插入到正确位置
+    //while 循环结束后，j 的位置已经是「最后一个比 newNum 小的元素」，或 j=-1（所有已排序元素都比 newNum 大），此时newNum的正确插入位置是j 的下一个位置（j+1），而非 j 本身。
     arr[j + 1] = newNum;
   }
   return arr;
 };
-
 testSort(insertSort);
