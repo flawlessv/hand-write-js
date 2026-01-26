@@ -50,27 +50,22 @@ function maxArea(height){
   
   // 最优解法：双指针法（时间复杂度 O(n)，空间复杂度 O(1)）
   function maxAreaOptimal(height) {
-    let left = 0  // 左指针
-    let right = height.length - 1  // 右指针
-    let max = 0
+    // 面积计算：x*y = (right-left) * min(height[right],height[left])
+    let maxArea = 0
+    let left = 0 // 左指针
+    let right = height.length-1 // 右指针
+
     
-    while (left < right) {
-      // 计算当前容器的面积
-      const minHeight = Math.min(height[left], height[right])
-      const width = right - left
-      const area = minHeight * width
-      max = Math.max(max, area)
-      
-      // 移动较小高度的指针，因为移动较大高度的指针不会增加面积
-      // 原因：宽度在减小，如果高度也减小或不变，面积必然减小
-      if (height[left] < height[right]) {
-        left++
-      } else {
-        right--
-      }
+    while(left < right){
+        const lowerHeight = Math.min(height[left],height[right])
+        const area = (right-left)*lowerHeight
+        maxArea = Math.max(maxArea,area)
+
+        if(lowerHeight === height[left])  left++
+        if(lowerHeight === height[right]) right--
     }
-    
-    return max
+
+    return maxArea
   }
   
   // 测试

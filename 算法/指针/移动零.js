@@ -55,6 +55,37 @@ var moveZeroes = function(nums) {
     return nums;
 };
 
+
+// 双指针补零法（面试口述版）
+// 思路：
+// - 用 write 指针指向“下一个应该放非 0 的位置”
+// - 用 i 从左到右扫描数组，遇到非 0 就写到 nums[write]，write++
+// - 第一遍结束后，[0..write-1] 都是按原相对顺序排列的非 0
+// - 再把 [write..n-1] 全部补成 0
+//
+// 为什么能保序：
+// - 非 0 是按扫描顺序依次写入前缀区域的，所以相对顺序不变
+//
+// 复杂度：
+// - 时间 O(n)：一趟写非 0 + 一趟补 0
+// - 空间 O(1)：原地修改（只用常数额外变量）
+const moveZero = (nums) => {
+    let write = 0
+    const size = nums.length
+
+    for (let i = 0; i < size; i++) {
+        if (nums[i] == 0) continue;
+        nums[write] = nums[i]
+        write++
+    }
+
+    while (write < size) {
+        nums[write] = 0
+        write++
+    }
+}
+
+
 // 测试用例
 console.log("=== 移动零测试 ===");
 
