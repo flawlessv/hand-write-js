@@ -23,3 +23,41 @@ function swapPairs(head: ListNode | null): ListNode | null {
 
     return next
 };
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var swapPairs2 = function(head) {
+    // 1. 创建虚拟头结点（dummy），解决头结点也要交换的问题
+    let dummy = new ListNode(0);
+    dummy.next = head;
+
+    // 2. prev 指针：始终指向【当前要交换的两个节点的前一个节点】
+    let prev = dummy;
+
+    // 3. 循环条件：后面必须有两个节点才需要交换
+    while (prev.next !== null && prev.next.next !== null) {
+        // 定义要交换的两个节点
+        let first = prev.next;        // 第一个节点
+        let second = prev.next.next;  // 第二个节点
+
+        // ====================== 核心交换三步 ======================
+        // 第一步：prev 直接指向 second，把 second 提到前面
+        prev.next = second;
+
+        // 第二步：first 指向 second 的下一个，防止链表断裂
+        first.next = second.next;
+
+        // 第三步：second 指向 first，完成两个节点交换
+        second.next = first;
+        // ==========================================================
+
+        // 4. prev 移动到【下一组要交换的前一个节点】
+        // 现在 first 已经是两个节点中靠后的那个
+        prev = first;
+    }
+
+    // 5. 返回新链表的头结点
+    return dummy.next;
+};

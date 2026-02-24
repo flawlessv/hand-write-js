@@ -30,21 +30,7 @@
  * - 除了某个元素只出现一次以外，其余每个元素均出现两次
  */
 
-// 方法一：排序法（你的解法）
-// 时间复杂度：O(n log n) - 排序的时间复杂度
-// 空间复杂度：O(1) - 只使用了常数额外空间
-var singleNumber = function(nums) {
-    nums.sort((a,b)=>a-b)
-    if(nums[0]!==nums[1]) return nums[0]
-    if(nums[nums.length-1]!==nums[nums.length-2]) return nums[nums.length-1]
-    for(let i = 1;i<nums.length-1;i++){
-      if(nums[i]!==nums[i-1]&&nums[i]!==nums[i+1]){
-        return nums[i]
-      }else{
-        continue
-      }
-    }
-};
+
 
 // 方法二：位运算 - 异或操作（最优解法，官方推荐）
 /**
