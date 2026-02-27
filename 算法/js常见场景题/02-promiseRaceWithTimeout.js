@@ -40,16 +40,14 @@ function myPromiseRace(iterable) {
  * 给任意 Promise 增加超时能力
  * @param {Promise<any>} promise
  * @param {number} ms 超时时间（毫秒）
- * @param {string} message 超时提示
  * @returns {Promise<any>}
  */
-function withTimeout(promise, ms, message) {
+function withTimeout(promise, ms) {
   let timer = null;
-  const timeoutMsg = message || `请求超时（>${ms}ms）`;
 
   const timeoutPromise = new Promise((_, reject) => {
     timer = setTimeout(() => {
-      reject(new Error(timeoutMsg));
+      reject("请求超时");
     }, ms);
   });
 
@@ -74,10 +72,9 @@ myPromiseRace([slowTask, fastTask]).then((res) => {
 
 withTimeout(slowTask, 300)
   .then((res) => console.log("withTimeout 成功：", res))
-  .catch((err) => console.log("withTimeout 失败：", err.message)); // 请求超时
+  .catch((err) => console.log("withTimeout 失败：", err)); // 请求超时
 
 module.exports = {
   myPromiseRace,
   withTimeout,
 };
-

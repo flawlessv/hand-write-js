@@ -57,6 +57,8 @@ class LRUCache {
     this.cache.set(key, value);
 
     if (this.cache.size > this.capacity) {
+      // keys() 返回按插入顺序遍历 key 的迭代器；next() 返回 { value, done }，
+      // 第一个 value 就是当前最久未使用（最早插入且未被刷新）的 key。
       const oldestKey = this.cache.keys().next().value;
       this.cache.delete(oldestKey);
     }
@@ -79,4 +81,3 @@ console.log(lru.get(3)); // C
 console.log(lru.get(4)); // D
 
 module.exports = LRUCache;
-

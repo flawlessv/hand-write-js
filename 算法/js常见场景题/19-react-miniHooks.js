@@ -12,7 +12,10 @@
  * - 每次 render 前重置 hookIndex，按调用顺序读取状态
  */
 
+// 所有 Hook 的“状态槽位”都放在同一个数组里：
+// 第 0 个 Hook 对应 hookStates[0]，第 1 个 Hook 对应 hookStates[1]，以此类推。
 const hookStates = [];
+// 当前渲染执行到了第几个 Hook（数组下标指针）
 let hookIndex = 0;
 
 function resetHookIndex() {
@@ -25,8 +28,10 @@ function resetHookIndex() {
  * @returns {[any, Function]}
  */
 function useState(initialState) {
+  // 保存当前 Hook 的槽位下标，后续 setState 通过闭包一直引用它
   const currentIndex = hookIndex;
 
+  // 只在首次渲染初始化；后续渲染直接复用已有状态
   if (!(currentIndex in hookStates)) {
     hookStates[currentIndex] =
       typeof initialState === "function" ? initialState() : initialState;
@@ -34,10 +39,12 @@ function useState(initialState) {
 
   function setState(nextState) {
     const prev = hookStates[currentIndex];
+    // 支持值更新和函数式更新：setState(v) / setState(prev => next)
     hookStates[currentIndex] =
       typeof nextState === "function" ? nextState(prev) : nextState;
   }
 
+  // 当前 Hook 处理完，指针移动到下一个 Hook 槽位
   hookIndex += 1;
   return [hookStates[currentIndex], setState];
 }
@@ -50,6 +57,7 @@ function useState(initialState) {
 function useRef(initialValue) {
   const currentIndex = hookIndex;
 
+  // ref 对象只创建一次；后续渲染拿到的是同一个对象引用
   if (!(currentIndex in hookStates)) {
     hookStates[currentIndex] = { current: initialValue };
   }
@@ -64,6 +72,7 @@ function useRef(initialValue) {
  * @returns {any}
  */
 function render(Component) {
+  // 每次渲染前都把指针重置到 0，确保 Hook 按固定顺序映射到固定槽位
   resetHookIndex();
   return Component();
 }
@@ -73,10 +82,12 @@ function render(Component) {
 // ---------------------------------------------------------------------------
 
 function Counter() {
+  // 这里等价于：const [count, setCount] = useState(0)
   const state = useState(0);
   const count = state[0];
   const setCount = state[1];
 
+  // useRef 不会触发重渲染，这里只是把同一个对象里的 current +1
   const renderCountRef = useRef(0);
   renderCountRef.current += 1;
 
@@ -113,4 +124,3 @@ module.exports = {
   useRef,
   render,
 };
-
