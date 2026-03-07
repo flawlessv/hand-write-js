@@ -70,6 +70,7 @@ function lengthOfLIS(nums: number[]): number {
         for (let j = 0; j < i; j++) {
             // 如果 nums[j] < nums[i]，说明可以形成递增子序列
             if (nums[j] < nums[i]) {
+                // TODO:解释下这里为什么是Math.max(dp[i], dp[j] + 1);
                 dp[i] = Math.max(dp[i], dp[j] + 1);
             }
         }

@@ -90,6 +90,8 @@ var plusOne = function(digits) {
         digits[i]++;
         
         // 如果当前位小于10，不需要进位，直接返回
+//         加完 不到 10 → 直接结束，完事
+//         加完 等于 10 → 置 0，继续往前一位进位
         if (digits[i] < 10) {
             return digits;
         }
