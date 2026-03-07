@@ -70,7 +70,8 @@ function lengthOfLIS(nums: number[]): number {
         for (let j = 0; j < i; j++) {
             // 如果 nums[j] < nums[i]，说明可以形成递增子序列
             if (nums[j] < nums[i]) {
-                // TODO:解释下这里为什么是Math.max(dp[i], dp[j] + 1);
+                // dp[i] 表示「以 nums[i] 结尾」的最长递增子序列长度。以 i 结尾的序列可以是「某个以 j 结尾的序列 + nums[i]」，长度 = dp[j] + 1。
+                // 可能有多个 j（0~i-1）都满足 nums[j] < nums[i]，我们要的是最长的那个，所以用 Math.max(dp[i], dp[j] + 1)：dp[i] 初始为 1，每次用「以 j 结尾的最长长度 + 1」去更新，保留更大值。
                 dp[i] = Math.max(dp[i], dp[j] + 1);
             }
         }
