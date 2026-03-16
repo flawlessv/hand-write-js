@@ -28,12 +28,6 @@
  * 
  **/
 
-// TreeNode 结构（LeetCode 题目里通常已给出；这里补上便于本地阅读/提示类型）
-type TreeNode = {
-    val: number
-    left: TreeNode | null
-    right: TreeNode | null
-}
 
 /**
  * 核心思路（DFS + “信号上报”）：
