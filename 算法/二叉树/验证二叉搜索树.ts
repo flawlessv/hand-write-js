@@ -12,38 +12,38 @@
  * 
  * 解题思路：
  * 利用二叉搜索树的性质：中序遍历的结果应该是严格递增的
- * 1. 对二叉树进行中序遍历，将结果存储在数组中
- * 2. 检查数组是否严格递增（每个元素都小于下一个元素）
- * 3. 如果严格递增则是有效的BST，否则不是
+ * 1. 中序遍历二叉树（左 -> 根 -> 右）
+ * 2. 维护一个前驱值 prev，当前值必须严格大于 prev
+ * 3. 若出现当前值 <= prev，则不是有效BST
  * 
  * 时间复杂度：O(n) - 需要遍历所有节点
- * 空间复杂度：O(n) - 需要存储遍历结果数组
+ * 空间复杂度：O(h) - 递归栈深度，h为树高
  */
 function isValidBST(root: TreeNode | null): boolean {
-    const traversalArr: number[] = [];
-    
+    let prev = -Infinity;
     // 中序遍历：左 -> 根 -> 右
-    function inorderTraverse(root: TreeNode | null): void {
-        if (root === null) return;
-        
+    function inorderTraverse(node: TreeNode | null): boolean {
+        if (node === null) return true;
+
         // 先遍历左子树
-        inorderTraverse(root.left);
-        // 访问根节点
-        traversalArr.push(root.val);
+        if (!inorderTraverse(node.left)) return false;
+        // 访问根节点并校验严格递增
+        if (node.val <= prev) return false;
+        prev = node.val;
         // 再遍历右子树
-        inorderTraverse(root.right);
+        return inorderTraverse(node.right);
     }
-    
-    // 执行中序遍历
-    inorderTraverse(root);
-    
-    // 检查遍历结果是否严格递增
-    for (let i = 0, length = traversalArr.length; i < length - 1; i++) {
-        // 如果当前元素大于等于下一个元素，说明不是严格递增
-        if (traversalArr[i] >= traversalArr[i + 1]) {
-            return false;
-        }
-    }
-    
-    return true;
+
+    return inorderTraverse(root);
 };
+
+
+// 方法二：上下界约束（递归传递 min/max，O(n) 时间 O(h) 空间）
+function isValidBSTByBounds(root: TreeNode | null): boolean {
+  const help = (node: TreeNode | null, min: number, max: number): boolean => {
+    if (!node) return true
+    if (node.val <= min || node.val >= max) return false
+    return help(node.left, min, node.val) && help(node.right, node.val, max)
+  }
+  return help(root, -Infinity, Infinity)
+}
