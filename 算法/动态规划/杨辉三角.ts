@@ -77,6 +77,21 @@ function generate(numRows: number): number[][] {
   return result;
 }
 
+
+// 极简版本
+function generateSimple(numRows: number): number[][] {
+  const res: number[][] = []
+  for (let i = 0; i < numRows; i++) {
+    let row = new Array(i + 1).fill(1)
+    for (let j = 1; j < i; j++) {
+      // 数组左对齐：左上方的数 + 正上方的数
+      row[j] = res[i - 1][j - 1] + res[i - 1][j]
+    }
+    res.push(row)
+  }
+  return res
+};
+
 /**
  * 方法二：动态规划（优化版本 - 只使用一维数组）
  * 
