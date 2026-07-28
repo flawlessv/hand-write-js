@@ -109,6 +109,24 @@ function lengthOfLongestSubstringOptimized(s: string): number {
     return maxLength;
 }
 
+// 使用Set来实现滑动窗口
+function lengthOfLongestSubstringBySet(s: string): number {
+    const set = new Set<string>()
+    let maxLen = 0
+    let left = 0
+    for (let right = 0; right < s.length; right++) {
+        const chart = s[right]
+        while (set.has(chart)) {
+            set.delete(s[left])
+            left++
+        }
+        set.add(s[right])
+        maxLen = Math.max(maxLen, set.size)
+    }
+    return maxLen
+};
+
+
 // 测试用例
 console.log("=== 无重复字符的最长子串测试 ===");
 console.log(`输入: "abcabcbb", 输出: ${lengthOfLongestSubstring("abcabcbb")}`); // 期望: 3
